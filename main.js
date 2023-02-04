@@ -34,7 +34,7 @@ bot.command("clear_category", async (ctx) => {
    try {
       await categoriesServiceDb.clearCategoryByNameAndUserId(categoryName, userId);
 
-      ctx.reply(`Категорія ${categoryName} успішно очищена`);
+      ctx.reply(`Категорія "${categoryName}" успішно очищена`);
    } catch(error) {
       ctx.reply(JSON.parse(error.message).message);
    }
@@ -76,7 +76,7 @@ bot.command("add_sum_category", async (ctx) => {
    try {
       const category = await categoriesServiceDb.addSumToCategoryByNameAndUserIdAndReturn(sum, name, userId);
 
-      ctx.reply(`Сума успішно додана до категорії ${category.name}. Всього витрат в цій категорії: ${category.value}`);
+      ctx.reply(`Сума успішно додана до категорії "${category.name}". Всього витрат в цій категорії: ${category.value}`);
    } catch(error) {
       ctx.reply(JSON.parse(error.message).message);
    }
@@ -99,7 +99,7 @@ bot.command("delete_sum_category", async (ctx) => {
    try {
       const category = await categoriesServiceDb.deleteSumFromCategoryByNameAndUserIdAndReturn(sum, name, userId);
 
-      ctx.reply(`Сума успішно видалени з категорії ${category.name}. Всього витрат в цій категорії: ${category.value}`);
+      ctx.reply(`Сума успішно видалени з категорії "${category.name}". Всього витрат в цій категорії: ${category.value}`);
    } catch(error) {
       ctx.reply(JSON.parse(error.message).message);
    }
@@ -117,7 +117,7 @@ bot.command("remove_category", async (ctx) => {
    try {
       await categoriesServiceDb.removeCategoryByNameAndUserId(categoryName, userId);
 
-      ctx.reply(`Категорія ${categoryName} успішно виделана`);
+      ctx.reply(`Категорія "${categoryName}" успішно виделана`);
    } catch(error) {
       ctx.reply(JSON.parse(error.message).message);
    }
@@ -139,7 +139,7 @@ bot.command("add_category", async (ctx) => {
    try {
       await categoriesServiceDb.addCategory(category, userId);
 
-      ctx.reply(`Нова категорія ${nameCategory} успішно створена`);
+      ctx.reply(`Нова категорія "${nameCategory}" успішно створена`);
    } catch(error) {
       ctx.reply(JSON.parse(error.message).message);
    }

@@ -3,6 +3,11 @@ class CategoriesServiceDb {
         this.connect = connect;
     }
     async addCategory(category, userId) {
+        const sameCategory = await this.getCategoryByNameAndUserId(category.name, userId);
+
+        if(sameCategory) {
+            throw new Error(JSON.stringify({ message: "Така категорія вже існує !" }));
+        }
         await this.connect.execute(
             "INSERT INTO categories (name, value, created_at, updated_at, user_id) VALUES (?, ?, ?, ?, ?)",
             [category.name, category.value, "2023", "2023", userId]
