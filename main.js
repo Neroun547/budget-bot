@@ -1,12 +1,14 @@
-require('dotenv').config()
+require('dotenv').config();
 
 const { Telegraf } = require("telegraf");
 const { CommonService } = require("./common.service");
 
 const { connection } = require("./db/connect");
 const { CategoriesServiceDb } = require("./db/categories/categories.service");
+const { CategoriesService } = require("./src/categories/categories.service");
 
 const categoriesServiceDb = new CategoriesServiceDb(connection);
+const categoriesService = new CategoriesService();
 const commonService = new CommonService();
 const bot = new Telegraf(process.env.token);
 
@@ -56,12 +58,12 @@ bot.command("get_category", async (ctx) => {
 
       return;
    }
-   ctx.reply(commonService.parseInfoCategories([category]));
+   ctx.reply(categoriesService.parseInfoCategories([category]));
 });
 
 bot.command("add_sum_category", async (ctx) => {
    const userId = ctx.update.message.from.id;
-   const { name, sum } = commonService.getSumAndNameCategory("/add_sum_category", ctx.message.text);
+   const { name, sum } = categoriesService.getSumAndNameCategory("/add_sum_category", ctx.message.text);
 
    if(!name) {
       ctx.reply("Категорію не знайдено");
@@ -84,7 +86,7 @@ bot.command("add_sum_category", async (ctx) => {
 
 bot.command("delete_sum_category", async (ctx) => {
    const userId = ctx.update.message.from.id;
-   const { name, sum } = commonService.getSumAndNameCategory("/delete_sum_category", ctx.message.text);
+   const { name, sum } = categoriesService.getSumAndNameCategory("/delete_sum_category", ctx.message.text);
 
    if(!name) {
       ctx.reply("Категорію не знайдено");
@@ -154,7 +156,7 @@ bot.command("get_categories", async (ctx) => {
 
       return;
    }
-   ctx.reply(commonService.parseInfoCategories(categories));
+   ctx.reply(categoriesService.parseInfoCategories(categories));
 });
 
 bot.command("get_categories", async (ctx) => {
@@ -166,7 +168,7 @@ bot.command("get_categories", async (ctx) => {
 
       return;
    }
-   ctx.reply(commonService.parseInfoCategories(categories));
+   ctx.reply(categories.parseInfoCategories(categories));
 });
 
 bot.command("remove_all_categories", async (ctx) => {

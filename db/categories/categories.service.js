@@ -1,3 +1,5 @@
+const Moment = require("moment");
+
 class CategoriesServiceDb {
     constructor(connect) {
         this.connect = connect;
@@ -10,7 +12,7 @@ class CategoriesServiceDb {
         }
         await this.connect.execute(
             "INSERT INTO categories (name, value, created_at, updated_at, user_id) VALUES (?, ?, ?, ?, ?)",
-            [category.name, category.value, "2023", "2023", userId]
+            [category.name, category.value, new Moment().format("YYYY-MM-DD"), new Moment().format("YYYY-MM-DD"), userId]
         );
     }
     async removeCategoryByNameAndUserId(name, userId) {
@@ -27,7 +29,7 @@ class CategoriesServiceDb {
         if(!category) {
             throw new Error(JSON.stringify({ message: "Категорія не знайдена" }));
         }
-        await this.connect.execute("UPDATE categories SET value = ? WHERE name = ? AND user_id = ?", [0, name, userId])
+        await this.connect.execute("UPDATE categories SET value = ? AND updated_at = ? WHERE name = ? AND user_id = ?", [0, new Moment().format("YYYY-MM-DD"), name, userId])
     }
     async addSumToCategoryByNameAndUserIdAndReturn(sum, name, userId) {
         const category = await this.getCategoryByNameAndUserId(name, userId);
@@ -37,7 +39,7 @@ class CategoriesServiceDb {
         }
         category.value += sum;
 
-        await this.connect.execute("UPDATE categories SET value = ? WHERE name = ? AND user_id = ?", [category.value, name, userId]);
+        await this.connect.execute("UPDATE categories SET value = ? AND updated_at = ? WHERE name = ? AND user_id = ?", [category.value, new Moment().format("YYYY-MM-DD"), name, userId]);
 
         return category;
     }
@@ -49,7 +51,7 @@ class CategoriesServiceDb {
         }
         category.value -= sum;
 
-        await this.connect.execute("UPDATE categories SET value = ? WHERE name = ? AND user_id = ?", [category.value, name, userId]);
+        await this.connect.execute("UPDATE categories SET value = ? AND updated_at = ? WHERE name = ? AND user_id = ?", [category.value, new Moment().format("YYYY-MM-DD"), name, userId]);
 
         return category;
     }
