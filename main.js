@@ -159,17 +159,6 @@ bot.command("get_categories", async (ctx) => {
    ctx.reply(categoriesService.parseInfoCategories(categories));
 });
 
-bot.command("get_categories", async (ctx) => {
-   const userId = ctx.update.message.from.id;
-   const categories = await categoriesServiceDb.getCategoryByNameAndUserId(userId);
-
-   if(!categories.length) {
-      ctx.reply("У вас немає категорій");
-
-      return;
-   }
-   ctx.reply(categories.parseInfoCategories(categories));
-});
 
 bot.command("remove_all_categories", async (ctx) => {
    const userId = ctx.update.message.from.id;

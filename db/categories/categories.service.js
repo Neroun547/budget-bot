@@ -29,7 +29,7 @@ class CategoriesServiceDb {
         if(!category) {
             throw new Error(JSON.stringify({ message: "Категорія не знайдена" }));
         }
-        await this.connect.execute("UPDATE categories SET value = ? AND updated_at = ? WHERE name = ? AND user_id = ?", [0, new Moment().format("YYYY-MM-DD"), name, userId])
+        await this.connect.execute("UPDATE categories SET value = ?, updated_at = ? WHERE name = ? AND user_id = ?", [0, new Moment().format("YYYY-MM-DD"), name, userId])
     }
     async addSumToCategoryByNameAndUserIdAndReturn(sum, name, userId) {
         const category = await this.getCategoryByNameAndUserId(name, userId);
@@ -39,7 +39,7 @@ class CategoriesServiceDb {
         }
         category.value += sum;
 
-        await this.connect.execute("UPDATE categories SET value = ? AND updated_at = ? WHERE name = ? AND user_id = ?", [category.value, new Moment().format("YYYY-MM-DD"), name, userId]);
+        await this.connect.execute("UPDATE categories SET value = ?, updated_at = ? WHERE name = ? AND user_id = ?", [Number(category.value), new Moment().format("YYYY-MM-DD"), name, userId]);
 
         return category;
     }
@@ -51,7 +51,7 @@ class CategoriesServiceDb {
         }
         category.value -= sum;
 
-        await this.connect.execute("UPDATE categories SET value = ? AND updated_at = ? WHERE name = ? AND user_id = ?", [category.value, new Moment().format("YYYY-MM-DD"), name, userId]);
+        await this.connect.execute("UPDATE categories SET value = ?, updated_at = ? WHERE name = ? AND user_id = ?", [category.value, new Moment().format("YYYY-MM-DD"), name, userId]);
 
         return category;
     }
