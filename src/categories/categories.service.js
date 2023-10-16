@@ -19,9 +19,19 @@ class CategoriesService {
         return parseString;
     }
     getSumAndNameCategory(command, text) {
-        const parseStrToArr = text.replace(command, "").split(" ");
+        const reverseString = text.replace(command, "").trim().split("").reverse().join("").trim();
+        let numStr = "";
 
-        return { name: parseStrToArr[1], sum: Number(parseStrToArr[2]) }
+        for(let i = 0; i < reverseString.length; i++) {
+            if(reverseString[i] !== " ") {
+                numStr += reverseString[i];
+            } else {
+                break;
+            }
+        }
+        let num = Number(numStr.split("").reverse().join(""));
+
+        return { sum: num, name: reverseString.split("").reverse().join("").trim().replace(numStr.split("").reverse().join(""), "").trim() }
     }
 }
 
